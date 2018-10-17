@@ -33,4 +33,14 @@ class Product
 		$products = $products->hidden(['summary']);
 		return $products;
 	}
+
+	public function getOne($id){
+		(new IDMustBePositiveInt())->goCheck();
+
+		$Product = ProductModel::getProductDetail($id);
+		if(!$Product){
+			throw new ProductException();
+		}
+		return $Product;
+	}
 }

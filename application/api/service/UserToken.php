@@ -35,7 +35,8 @@ class UserToken extends Token
 			if($loginFail){
 				$this->processLoginError($wxResult);
 			} else {
-				$this->grantToken($wxResult);
+				$token = $this->grantToken($wxResult);
+				return $token;
 			}
 		}
 	}
@@ -68,7 +69,7 @@ class UserToken extends Token
 				'msg' => '服务器缓存异常',
 				'errCode' => 10005
 			]);
-		}
+		} 
 		return $key;
 	}
 
