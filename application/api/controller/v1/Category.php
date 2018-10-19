@@ -2,6 +2,8 @@
 
 namespace app\api\controller\v1;
 
+use app\api\service\Token as TokenService;
+
 use app\api\model\Category as CategoryModel;
 
 use app\lib\exception\CategoryException;

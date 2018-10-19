@@ -12,6 +12,3 @@ class TestValidate extends BaseValidate
 		'email' => 'email'
 	];
 }
-
-
-?>

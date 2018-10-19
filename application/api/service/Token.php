@@ -6,7 +6,9 @@ use think\Cache;
 use think\Request;
 use think\Exception;
 
-use app\lib\exception\TokenException
+use app\lib\exception\TokenException;
+use app\lib\exception\ForbiddenException;
+use app\lib\enum\ScopeEnum;
 
 class Token
 {
@@ -38,9 +40,37 @@ class Token
 		}
 	}
 
-	public static function getCurrentUid($token){
+	public static function getCurrentUid(){
 		// token 
 		$uid = self::getCurrentTokenVar('uid');
 		return $uid;
+	}
+
+	// 用户和 CMS 管理员都可以访问的权限
+	public static function needPrimaryScope(){
+		$scope = self::getCurrentTokenVar('scope');
+		if($scope){
+			if($scope >= ScopeEnum::User){
+				return true;
+			} else {
+				throw new ForbiddenException();
+			}
+		} else {
+			throw new TokenException();
+		}
+	}
+
+	// 只要用户才能访问权限
+	public static function needExclusiveScpoe(){
+		$scope = self::getCurrentTokenVar('scope');
+		if($scope){
+			if($scope == ScopeEnum::User){
+				return true;
+			} else {
+				throw new ForbiddenException();
+			}
+		} else {
+			throw new TokenException();
+		}
 	}
 }

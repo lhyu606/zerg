@@ -38,4 +38,3 @@ class Banner extends Model
 
 // Db  		find() select()
 // Model 	get()  all() find() select()
-?>

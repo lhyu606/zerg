@@ -16,6 +16,3 @@ class IDMustBePositiveInt extends BaseValidate
 	];
 	
 }
-
-
-?>

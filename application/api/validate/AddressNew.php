@@ -15,9 +15,5 @@ class AddressNew extends BaseValidate
 		'country' => 'require|isNotEmpty',
 		'detail' => 'require|isNotEmpty',
 	];
-
-	protected $message = [
-		'address' => '请检查 address'
-	];
 	
 }
