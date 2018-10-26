@@ -56,7 +56,7 @@
 
 	// Route::get('api/:version/second', 'api/:version.Address/second');
 
-	Route::get('api/:version/order', 'api/:version.Order/placeOrder');
+	Route::post('api/:version/order', 'api/:version.Order/placeOrder');
 	
 
 

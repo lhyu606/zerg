@@ -12,5 +12,3 @@ class ForbiddenException extends BaseException
 
 	public $errorCode = 10001;
 }
-
-?>

@@ -12,5 +12,3 @@ class ParameterException extends BaseException
 
 	public $errorCode = 10000;
 }
-
-?>

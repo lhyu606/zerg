@@ -58,5 +58,3 @@ class ExceptionHandler extends Handle
 		Log::record($e->getMessage(), 'error');
 	}
 }
-
-?>

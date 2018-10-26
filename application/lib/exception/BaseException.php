@@ -32,4 +32,3 @@ class BaseException extends Exception
 	}
 }
 
-?>

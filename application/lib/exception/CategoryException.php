@@ -12,5 +12,3 @@ class BannerMissException extends BaseException
 
 	public $errorCode = 50000;
 }
-
-?>

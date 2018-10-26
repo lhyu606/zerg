@@ -12,5 +12,3 @@ class ProductException extends BaseException
 
 	public $errorCode = 20000;
 }
-
-?>

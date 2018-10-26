@@ -12,5 +12,3 @@ class UserException extends BaseException
 
 	public $errorCode = 60000;
 }
-
-?>
