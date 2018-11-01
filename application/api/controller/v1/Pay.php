@@ -15,11 +15,19 @@ use app\api\controller\BaseController;
 
 class Pay extends BaseController
 {
+	protected $beforeActionList = [
+		'checkExclusiveScope' => ['only' => 'getPreOrder']
+	];
+
 	protected function checkPrimaryScopt(){
 		TokenService::needPrimaryScope();
 	}
 
 	protected function checkExclusiveScope(){
 		TokenService::needExclusiveScope();
+	}
+
+	public function getPreOrder(){
+
 	}
 }
