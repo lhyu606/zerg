@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\service\Token as TokenService;
 use app\api\service\Order as OrderService;
+use app\api\service\Pay as PayService;
 
 use app\api\validate\OrderPlace;
 
@@ -27,7 +28,9 @@ class Pay extends BaseController
 		TokenService::needExclusiveScope();
 	}
 
-	public function getPreOrder(){
-
+	public function getPreOrder($id=''){
+		(new IDMustBePositiveInt())->goCheck();
+		$pay = new PayService($id);
+		$pay->pay();
 	}
 }

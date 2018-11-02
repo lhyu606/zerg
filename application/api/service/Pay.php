@@ -13,6 +13,12 @@ use app\lib\exception\TokenException;
 
 use app\lib\enum\OrderStatusEnum;
 
+use think\Loader;
+use think\Log;
+
+// extend/WxPay/WxPay.Api.php
+Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
+
 class Pay
 {
 	private $orderID;
@@ -36,14 +42,34 @@ class Pay
 		if(!$status['pass']){
 			return $status;
 		}
+		return $this->makeWxPreOrder($status['orderPrice']);
 	}
 
-	private function makeWxPreOrder(){
+	private function makeWxPreOrder($totalPrice){
 		// openid
 		$openid = Token::getCurrentTokenVar('openid');
 		if(!openid){
 			throw new TokenException();
 		}
+		$wxOrderData = new \WxPayUnifiedOrder();
+		$wxOrderData->SetOut_trade_no($this->orderNO);
+		$wxOrderData->SetTrade_type('JSAPI');
+		$wxOrderData->SetTotal_fee($totalPrice*100);
+		$wxOrderData->SetBody('零食商贩');
+		$wxOrderData->SetOpenid($openid);
+		$wxOrderData->SetNotify_url();
+		return $this->getPaySignature($wxOrderData);
+	}
+
+	private function getPaySignature($wxOrderData){
+		$wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+		if($wxOrder['return_code'] != 'SUCCESS' || 
+			$wxOrder['result_code'] != 'SUCCESS'){
+			Log::record($wxOrder, 'error');
+			Log::record('获取预支付订单失败', 'error');
+		}
+
+		return null;
 	}
 
 	private function checkOrderValid(){
