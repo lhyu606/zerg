@@ -7,6 +7,7 @@ use app\api\service\Order as OrderService;
 use app\api\service\Pay as PayService;
 
 use app\api\validate\OrderPlace;
+use app\api\validate\IDMustBePositiveInt;
 
 use app\lib\exception\ForbiddenException;
 use app\lib\exception\TokenException;
@@ -25,7 +26,7 @@ class Pay extends BaseController
 	}
 
 	protected function checkExclusiveScope(){
-		TokenService::needExclusiveScope();
+		TokenService::needExclusiveScpoe();
 	}
 
 	public function getPreOrder($id=''){

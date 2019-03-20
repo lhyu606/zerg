@@ -31,7 +31,7 @@ class Pay
 		$this->orderID = $orderID;
 	}
 
-	public function(){
+	public function pay(){
 		// 订单号可能不存在
 		// 订单号存在，但是和用户不匹配
 		// 订单可能已经支付过
@@ -48,7 +48,7 @@ class Pay
 	private function makeWxPreOrder($totalPrice){
 		// openid
 		$openid = Token::getCurrentTokenVar('openid');
-		if(!openid){
+		if(!$openid){
 			throw new TokenException();
 		}
 		$wxOrderData = new \WxPayUnifiedOrder();
@@ -57,19 +57,24 @@ class Pay
 		$wxOrderData->SetTotal_fee($totalPrice*100);
 		$wxOrderData->SetBody('零食商贩');
 		$wxOrderData->SetOpenid($openid);
-		$wxOrderData->SetNotify_url();
+		$wxOrderData->SetNotify_url('www.qq.com');
 		return $this->getPaySignature($wxOrderData);
 	}
 
 	private function getPaySignature($wxOrderData){
-		$wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+		$wxOrder = \WxPayApi::unifiedOrder($wxOrderData, $wxOrderData);
 		if($wxOrder['return_code'] != 'SUCCESS' || 
 			$wxOrder['result_code'] != 'SUCCESS'){
 			Log::record($wxOrder, 'error');
 			Log::record('获取预支付订单失败', 'error');
 		}
 
-		return null;
+		$this->recordPreOrder($wxOrder);
+		return $wxOrder;
+	}
+
+	private function recordPreOrder($wxOrder){
+		OrderModel::where('id', '=', $this->orderID)->update(['prepay_id' => $wxOrder['prepay_id']]);
 	}
 
 	private function checkOrderValid(){
